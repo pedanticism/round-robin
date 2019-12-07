@@ -12,7 +12,7 @@ install:
   - mv /tmp/terraform ~/bin/ 
   - export PATH="~/bin:$PATH"
 script: 
-  - push terraform
+  - pushd terraform
   - terraform init -input=false
   - terraform plan -out ./tfplan.tmp
   - terraform apply "./tfplan.tmp"
