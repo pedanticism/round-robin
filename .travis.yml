@@ -1,8 +1,18 @@
 language: python
 python:
   - "3.6"
+env:
+# Don't prompt for input!
+  - TF_INPUT=false
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
+  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.17/terraform_0.12.17_linux_amd64.zip
+  - unzip /tmp/terraform.zip -d /tmp
+  - mkdir ~/bin
+  - mv /tmp/terraform ~/bin 
+  - export PATH="~/bin:$PATH"
 script: 
-  - pip freeze
-  - aws iam list-users --max-items 5
+  - push terraform
+  - terraform init -input=false
+  - terraform plan -out ./tfplan.tmp
+  - terraform apply "./tfplan.tmp"
