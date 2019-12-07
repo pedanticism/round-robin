@@ -15,4 +15,4 @@ script:
   - pushd terraform
   - terraform init -input=false
   - terraform plan -out ./tfplan.tmp
-  - terraform apply "./tfplan.tmp"
+  - terraform apply -auto-approve "./tfplan.tmp"
