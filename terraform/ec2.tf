@@ -6,7 +6,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
   }
 
   filter {
@@ -22,8 +22,9 @@ resource "aws_instance" "web_instance1" {
   instance_type = "t2.micro"
   subnet_id = aws_default_subnet.default_az1.id
   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
+  user_data_base64 = data.template_cloudinit_config.config.rendered
   tags = {
-    Name = "RoundRobin"
+    Name = "RoundRobin1"
   }
 }
 resource "aws_instance" "web_instance2" {
@@ -31,8 +32,9 @@ resource "aws_instance" "web_instance2" {
   instance_type = "t2.micro"
   subnet_id = aws_default_subnet.default_az2.id
   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
+  user_data_base64 = data.template_cloudinit_config.config.rendered
   tags = {
-    Name = "RoundRobin"
+    Name = "RoundRobin2"
   }
 }
 

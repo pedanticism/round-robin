@@ -31,7 +31,15 @@ resource "aws_default_security_group" "default_sg" {
     from_port = 80
     to_port   = 80
     description = "Inbound HTTP"
-    cidr_blocks = ["87.113.133.138/32"]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+    ingress {
+    protocol  = "tcp"
+    self      = true
+    from_port = 3000
+    to_port   = 3000
+    description = "Inbound HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port   = 0
