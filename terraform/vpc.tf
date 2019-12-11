@@ -22,6 +22,25 @@ resource "aws_default_subnet" "default_az2" {
   }
 }
 
+resource "aws_security_group" "alb_sg" {
+  vpc_id = aws_default_vpc.default_vpc.id
+
+  ingress {
+    protocol  = "tcp"
+    self      = true
+    from_port = 80
+    to_port   = 80
+    description = "Inbound HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+    egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "ALB SG egress rule"
+  }
+}
 resource "aws_default_security_group" "default_sg" {
   vpc_id = aws_default_vpc.default_vpc.id
 
