@@ -3,41 +3,12 @@
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+    values = ["round-robin/Ubuntu-bionic-amd64-*"]
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
+  owners=[441546210005]
 }
-
-resource "aws_instance" "web_instance1" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id = aws_default_subnet.default_az1.id
-  iam_instance_profile = aws_iam_instance_profile.instance_profile.name
-  user_data_base64 = data.template_cloudinit_config.config.rendered
-  tags = {
-    Name = "RoundRobin1"
-  }
-}
-resource "aws_instance" "web_instance2" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id = aws_default_subnet.default_az2.id
-  iam_instance_profile = aws_iam_instance_profile.instance_profile.name
-  user_data_base64 = data.template_cloudinit_config.config.rendered
-  tags = {
-    Name = "RoundRobin2"
-  }
-}
-
 
 resource "aws_iam_role" "role" {
   name = "instance_role"
@@ -70,13 +41,30 @@ resource "aws_iam_role_policy_attachment" "attach_CloudWatchAgentServerPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-resource "aws_iam_instance_profile" "instance_profile" {
+resource "aws_iam_instance_profile" "round_robin" {
   name = "instance_profile"
   role = aws_iam_role.role.name
 }
 
 
-# TODO Create and attach instance role for SSM access to the instances so I can look to install the node runtimes.
-# TODO Define instance metdata to install node JS, upload the code and start the runtime
-# TODO confugure cloudwatch logging
-# TODO Security groups
+resource "aws_launch_template" "round_robin" {
+  name_prefix   = "round_robin"
+  image_id      = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  iam_instance_profile { 
+    arn=aws_iam_instance_profile.round_robin.arn
+  }
+  vpc_security_group_ids=[aws_default_security_group.default_sg.id]
+}
+
+resource "aws_autoscaling_group" "round_robin" {
+  availability_zones = ["eu-west-1a","eu-west-1b"]
+  desired_capacity   = 2
+  max_size           = 2
+  min_size           = 2
+  target_group_arns   = [aws_alb_target_group.alb_target_group.arn]
+  launch_template {
+    id      = aws_launch_template.round_robin.id
+    version = "$Latest"
+  }
+}

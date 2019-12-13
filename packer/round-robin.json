@@ -1,0 +1,49 @@
+{
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+        "aws_session_token":"{{env `AWS_SESSION_TOKEN`}}"
+    },
+    "builders": [{
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "token": "{{user `aws_session_token`}}",
+      "region": "eu-west-1",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_description": "Round Robin AMI (Ubuntu) {{timestamp}}",
+      "ami_name": "round-robin/Ubuntu-bionic-amd64-{{timestamp}}"
+    }],
+    "provisioners": [      
+      {
+          "type": "file",
+          "source": "../nodejs/index.js",
+          "destination": "/tmp/index.js"
+      },
+      {
+        "type": "file",
+        "source": "../nodejs/nodeapp.service",
+        "destination": "/tmp/nodeapp.service"
+      },
+      {
+        "type": "shell",
+        "inline": [ 
+          "sudo mkdir -p /var/www/nodeapp/",
+          "sudo mv /tmp/index.js /var/www/nodeapp/",
+          "sudo mv /tmp/nodeapp.service /etc/systemd/system/",
+          "sudo systemctl start nodeapp",
+          "sudo systemctl enable nodeapp" 
+        ]
+      }
+    ]    
+  }
