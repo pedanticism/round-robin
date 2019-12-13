@@ -38,9 +38,13 @@
       {
         "type": "shell",
         "inline": [ 
+          "set -x",
           "sudo mkdir -p /var/www/nodeapp/",
           "sudo mv /tmp/index.js /var/www/nodeapp/",
           "sudo mv /tmp/nodeapp.service /etc/systemd/system/",
+          "sudo apt-get install -y curl",
+          "curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -",
+          "sudo apt-get -y install nodejs",
           "sudo systemctl start nodeapp",
           "sudo systemctl enable nodeapp" 
         ]

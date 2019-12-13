@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+
 
 var os = require('os')
 var http = require('http')
