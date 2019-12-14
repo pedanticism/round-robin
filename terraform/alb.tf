@@ -7,8 +7,7 @@ resource "aws_lb" "alb" {
     aws_default_subnet.default_az1.id, 
     aws_default_subnet.default_az2.id
   ]
-
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
 
   tags = {

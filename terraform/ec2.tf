@@ -65,6 +65,6 @@ resource "aws_autoscaling_group" "round_robin" {
   target_group_arns   = [aws_alb_target_group.alb_target_group.arn]
   launch_template {
     id      = aws_launch_template.round_robin.id
-    version = "$Latest"
+    version = aws_launch_template.round_robin.latest_version
   }
 }
