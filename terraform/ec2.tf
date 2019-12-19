@@ -58,9 +58,10 @@ resource "aws_launch_template" "round_robin" {
 }
 
 resource "aws_autoscaling_group" "round_robin" {
+  name               = "asg_round_robin"
   availability_zones = ["eu-west-1a","eu-west-1b"]
   desired_capacity   = 2
-  max_size           = 2
+  max_size           = 4
   min_size           = 2
   target_group_arns   = [aws_alb_target_group.alb_target_group.arn]
   launch_template {
