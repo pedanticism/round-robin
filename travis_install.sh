@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 set -evx
  
 pip install -r requirements.txt
