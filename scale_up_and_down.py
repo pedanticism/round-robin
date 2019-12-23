@@ -1,4 +1,4 @@
-# Scales an ASG up and down again
+# Scales an ASG up and down again 
 # If there is a new version of the launch template that references a different
 # AMI then the default termination policy will delete the old versions of the instances
 # on scaledown. This allows us to do a hot-swap deployment.
