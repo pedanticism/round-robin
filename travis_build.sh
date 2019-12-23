@@ -1,4 +1,5 @@
-set -x
+!#/bin/bash
+set -evx
 # Inject the commit hash into the service configuration
 sed -i .bak -E "s/(GIT_HASH=).*/\1$TRAVIS_COMMIT/" nodeapp.service
 

@@ -1,5 +1,6 @@
+!#/bin/bash
+set -evx
  
-set -x 
 pip install -r requirements.txt
 curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.17/terraform_0.12.17_linux_amd64.zip
 unzip /tmp/terraform.zip -d /tmp
