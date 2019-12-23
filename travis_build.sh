@@ -17,4 +17,5 @@ terraform plan -out ./tfplan.tmp
 terraform apply -auto-approve "./tfplan.tmp"
 
 popd
-./scale_up_and_down.py
+
+python3 scale_up_and_down.py
