@@ -8,7 +8,7 @@ function handleRequest(req, res) {
   res.write('<HTML><BODY>')
   res.write('<P>Hi there! I\'m being served from ' + os.hostname() + '</P>')
   res.write('<P>AMI built from commit' + process.env.TRAVIS_COMMIT + '</P>')
-  res.write('<P>Travis build numberc' + process.env.TRAVIS_BUILD_NUMBER + '</P>')
+  res.write('<P>Travis build number'  + process.env.TRAVIS_BUILD_NUMBER + '</P>')
   res.write('</BODY></HTML>')
   res.end()
 }

@@ -1,7 +1,8 @@
 #!/bin/bash
 set -evx
-# Inject the commit hash into the service configuration
+# Inject the build metadata into the service configuration
 sed -i.bak -E "s/(TRAVIS_COMMIT=).*/\1$TRAVIS_COMMIT/" ./nodejs/nodeapp.service
+sed -i.bak -E "s/(TRAVIS_BUILD_NUMBER=).*/\1$TRAVIS_BUILD_NUMBER/" ./nodejs/nodeapp.service
 
 # Check the replace worked ok
 cat ./nodejs/nodeapp.service

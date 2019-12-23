@@ -10,6 +10,7 @@ Group=nogroup
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
 Environment=TRAVIS_COMMIT=TRAVIS_COMMIT
+Environment=TRAVIS_BUILD_NUMBER=TRAVIS_BUILD_NUMBER
 WorkingDirectory=/var/www/nodeapp
 
 [Install]
