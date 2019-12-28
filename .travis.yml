@@ -1,12 +1,14 @@
 jobs:
   include:
-    - language: node_js
+    - stage: Tests
+      language: node_js
       node_js: 12
       script:
       - pushd nodejs
       - npm test
 
-    - language: python
+    - stage: Deploy
+      language: python
       python: 3.8
       script:
       - python -c "print('Hi from Python!')"
