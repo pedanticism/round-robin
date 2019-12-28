@@ -1,11 +1,25 @@
-language: python
-python:
-  - "3.6"
-env:
+jobs:
+  include:
+    - language: python
+      python: 3.8
+      script:
+      - python -c "print('Hi from Python!')"
+
+    - language: node_js
+      node_js: 12
+      script:
+      - node -e "console.log('Hi from NodeJS!')"
+
+
+
+#language: python
+#python:
+#  - "3.6"
+#env:
 # Don't prompt for input!
-  - TF_INPUT=false
-install:
-  - ./travis_install.sh
-script: 
-  - ./travis_build.sh
+#  - TF_INPUT=false
+#install:
+#  - ./travis_install.sh
+#script: 
+#  - ./travis_build.sh
 
