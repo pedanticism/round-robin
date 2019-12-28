@@ -9,22 +9,12 @@ jobs:
 
     - stage: Deploy
       language: python
-      python: 3.8
-      script:
-      - python -c "print('Hi from Python!')"
-
-
-
-
-
-#language: python
-#python:
-#  - "3.6"
-#env:
-# Don't prompt for input!
-#  - TF_INPUT=false
-#install:
-#  - ./travis_install.sh
-#script: 
-#  - ./travis_build.sh
+      python: 3.6
+      env:
+        - TF_INPUT=false
+      install:
+        - ./travis_install.sh
+      script: 
+        - python -c "print('Hi from Python!')"
+        - ./travis_build.sh
 
