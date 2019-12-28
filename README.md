@@ -1,5 +1,5 @@
 # round-robin
-Demonstrate how to deploy a pair of Node.js webapp servers behind a load balancer in s round-robin configuration.
+Demonstrate how to deploy a pair of Node.js webapp servers behind a load balancer in a round-robin configuration.
 
 ## Architecture
 
@@ -74,6 +74,10 @@ You will see when the new EC2s with the new AMI version are brought into service
 <HTML><BODY><P>Hi there! I'm being served from ip-172-31-9-73</P><P>AMI built from commit0ecbca35f91edf4d3e03476bfc84dc620efb1fa2</P><P>Travis build number28</P></BODY></HTML>
 ```
 ## Next steps
+
+The solution is not perfect. Here are some additional opportunities to improve
+the solution given time and effort.
+
 ### Pipeline speed and feedback cycle
 Although the AMI based update of the images is robust, the overall time to build the images 
 and deploy them is much longer than it should be. In a microservices environment, running each
@@ -81,6 +85,10 @@ microservice on a separate set of EC2s is likely to be expensive and not deliver
 expectations of speed and agility. In such a case, encapsulating the services in docker
 images and scheduling them using e.g. ECS or EKS would likely be a more workable 
 (but more complex) solution to the problem of keeping the pipeline responsive.
+
+Alternatively it would be possible to use AWS CodeDeploy as a mechanism for deploying
+the Node.JS packages to the instances without the need for baking an entire runtime
+environment and deploying it.
 
 ### Rollbacks
 The pipeline is rudimentary and works on
@@ -92,5 +100,16 @@ version as current.
 ### Observability
 The application logs to journald. Ideally these
 logs would all be shipped to a central log aggregation facility
-such as cloudwatch, ELK or Splunk, where the logs could be interrogated without the 
-need for SSM. Ideally SSM would be used only _in extremis_.
+such as Cloudwatch, ELK or Splunk, where the logs could be interrogated without the 
+need for SSM. Ideally SSM would be used only _in extremis_ to inspect
+the state of the machines. There are a number of utilities available
+that can ship journald logs to cloudwatch. 
+
+### Security
+The same security group is leveraged for the ALB and the EC2 instances. Ideally they would
+have more tightly controlled ingress and egress rules specific to each type of traffic.
+
+### Better use of variables, less hard coding
+There are some values, such as port numbers, ALB Names that are hard-coded within the
+different code modules. Ideally these should be defined centrally and transmitted to each
+of the individual elements of the job using variables.
